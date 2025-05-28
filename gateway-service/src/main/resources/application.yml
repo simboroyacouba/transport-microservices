@@ -1,9 +1,9 @@
 server:
-  port: 8888
+  port: ${GATEWAY_SERVICE_PORT} #8888
 
 spring:
   application:
-    name: gateway-service
+    name: ${GATEWAY_SERVICE_NAME} #gateway-service
 
   cloud:
     config:
@@ -17,21 +17,21 @@ spring:
 #          lower-case-service-id: true
 
       routes:
-        - id: reservation-service
-          uri: lb://RESERVATION-SERVICE
+        - id: ${SPRING_CLOUD_GATEWAY_ROUTES_0_ID} #reservation-service
+          uri: ${SPRING_CLOUD_GATEWAY_ROUTES_0_URI} #lb://RESERVATION-SERVICE
           predicates:
-            - Path=/api/reservations/**
+            - ${SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0} #Path=/api/reservations/**
 
-        - id: paiement-service
-          uri: lb://PAIEMENT-SERVICE
+        - id: ${SPRING_CLOUD_GATEWAY_ROUTES_1_ID} #paiement-service
+          uri: ${SPRING_CLOUD_GATEWAY_ROUTES_1_URI} #lb://PAIEMENT-SERVICE
           predicates:
-            - Path=/api/paiements/**
+            - ${SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0} #Path=/api/paiements/**
 
 
 
 eureka:
   client:
     service-url:
-      defaultZone:  http://localhost:8761/eureka
+      defaultZone:  ${PAIEMENT_SERVICE_EUREKA_URL} #http://localhost:8761/eureka
   instance:
     prefer-ip-address: true

@@ -1,10 +1,10 @@
 server:
-  port: 8761
+  port: ${DISCOVERY_SERVICE_PORT} #8761
 
 
 spring:
   application:
-    name: discovery-service
+    name: ${DISCOVERY_SERVICE_NAME} #discovery-service
 
   cloud:
     discovery:

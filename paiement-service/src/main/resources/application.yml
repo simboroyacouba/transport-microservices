@@ -1,9 +1,9 @@
 server:
-  port: 7070
+  port: ${PAIEMENT_SERVICE_PORT} #7070
 
 spring:
   application:
-    name: paiement-service
+    name: ${PAIEMENT_SERVICE_NAME} #paiement-service
 
   data:
     rest:
@@ -11,9 +11,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/paiement
-    username: user_cdubon
-    password: 123456
+    url: jdbc:postgresql://${PAIEMENT_SERVICE_DB_URL} #localhost:5432/paiement
+    username: ${PAIEMENT_SERVICE_DB_USERNAME} #user_cdubon
+    password: ${PAIEMENT_SERVICE_DB_PASSWORD} #123456
 
   jpa:
     database: POSTGRESQL
@@ -40,16 +40,16 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone:  http://localhost:8761/eureka
+      defaultZone:  ${PAIEMENT_SERVICE_EUREKA_URL} #http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
 
 springdoc:
   swagger-ui:
-    path: /api/paiements/swagger-ui.html
+    path: ${PAIEMENT_SERVICE_EUREKA_SWAGGER_PATH} #/api/paiements/swagger-ui.html
     enabled: true
   api-docs:
-    path: /api/paiements/v3/api-docs
+    path: ${PAIEMENT_SERVICE_EUREKA_API_DOCS_PATH} #/api/paiements/v3/api-docs
 
 debug: true
 #management:
