@@ -1,0 +1,59 @@
+server:
+  port: 7070
+
+spring:
+  application:
+    name: paiement-service
+
+  data:
+    rest:
+      base-path: /api
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/paiement
+    username: user_cdubon
+    password: 123456
+
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+  sql:
+    init:
+      platform: postgres
+
+  profiles:
+    active: dev
+
+  cloud:
+    discovery:
+      enabled: true
+    config:
+      enabled: false
+
+  main:
+    allow-bean-definition-overriding: true
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    path: /api/paiements/swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /api/paiements/v3/api-docs
+
+debug: true
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: *
