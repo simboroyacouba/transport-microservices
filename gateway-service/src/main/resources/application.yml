@@ -17,21 +17,21 @@ spring:
 #          lower-case-service-id: true
 
       routes:
-        - id: ${SPRING_CLOUD_GATEWAY_ROUTES_0_ID} #reservation-service
-          uri: ${SPRING_CLOUD_GATEWAY_ROUTES_0_URI} #lb://RESERVATION-SERVICE
-          predicates:
-            - ${SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0} #Path=/api/reservations/**
+        #- id: ${SPRING_CLOUD_GATEWAY_ROUTES_0_ID} #reservation-service
+         # uri: ${SPRING_CLOUD_GATEWAY_ROUTES_0_URI} #lb://RESERVATION-SERVICE
+          #predicates:
+           # - ${SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0} #Path=/api/reservations/**
 
-        - id: ${SPRING_CLOUD_GATEWAY_ROUTES_1_ID} #paiement-service
-          uri: ${SPRING_CLOUD_GATEWAY_ROUTES_1_URI} #lb://PAIEMENT-SERVICE
+        - id: paiement-service #paiement-service
+          uri: lb://PAIEMENT-SERVICE #lb://PAIEMENT-SERVICE
           predicates:
-            - ${SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0} #Path=/api/paiements/**
+            - Path=/api/paiements/** #Path=/api/paiements/**
 
 
 
 eureka:
   client:
     service-url:
-      defaultZone:  ${PAIEMENT_SERVICE_EUREKA_URL} #http://localhost:8761/eureka
+      defaultZone:  ${GATEWAY_SERVICE_EUREKA_URL} #http://localhost:8761/eureka
   instance:
     prefer-ip-address: true

@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:17.4
+    restart: always
+    container_name: postgres
+    ports:
+      - 7400:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - public
+
+  discovery:
+    image: discovery-service:latest
+    restart: always
+    container_name: discovery
+    ports:
+      - "8000:8761"
+    environment:
+      - DISCOVERY_SERVICE_NAME=discovery-service
+      - DISCOVERY_SERVICE_PORT=8761
+    networks:
+      - public
+
+  paiement:
+    image: paiement-service:latest
+    restart: always
+    container_name: paiement
+    depends_on:
+      - db
+      - discovery
+    expose:
+      - "7070"
+    environment:
+      - PAIEMENT_SERVICE_NAME=paiement-service
+      - PAIEMENT_SERVICE_PORT=7070
+      - PAIEMENT_SERVICE_DB_URL=db:5432/paiement
+      - PAIEMENT_SERVICE_DB_USERNAME=user_paiement
+      - PAIEMENT_SERVICE_DB_PASSWORD=123456
+      - PAIEMENT_SERVICE_EUREKA_URL=http://discovery:8761/eureka
+      - PAIEMENT_SERVICE_EUREKA_SWAGGER_PATH=/api/paiements/swagger-ui.html
+      - PAIEMENT_SERVICE_EUREKA_API_DOCS_PATH=/api/paiements/v3/api-docs
+    networks:
+      - public
+
+  gateway:
+    image: gateway-service:latest
+    restart: always
+    container_name: gateway
+    ports:
+      - "8002:8888"
+    depends_on:
+      - paiement
+      - discovery
+    environment:
+      - GATEWAY_SERVICE_NAME=gateway-service
+      - GATEWAY_SERVICE_PORT=8888
+      - GATEWAY_SERVICE_EUREKA_URL=http://discovery:8761/eureka
+  
+    networks:
+      - public
+
+volumes:
+  pgdata2:
+    driver: local
+
+networks:
+  public:
+    external: true
