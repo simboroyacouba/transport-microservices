@@ -21,7 +21,7 @@ services:
     restart: always
     container_name: discovery
     ports:
-      - "8000:8761"
+      - "8761:8761"
     environment:
       - DISCOVERY_SERVICE_NAME=discovery-service
       - DISCOVERY_SERVICE_PORT=8761
@@ -54,7 +54,7 @@ services:
     restart: always
     container_name: gateway
     ports:
-      - "8002:8888"
+      - "8888:8888"
     depends_on:
       - paiement
       - discovery
