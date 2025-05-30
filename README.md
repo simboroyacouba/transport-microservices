@@ -54,7 +54,9 @@ Discovery Service	http://localhost:8761
 
 Gateway Service	http://localhost:8888
 
-Paiement Service	http://localhost:8888/paiement (via Gateway)
+Paiement Service(via Gateway)	
+- http://localhost:8888/paiement 
+- Documentation API: http://localhost:8888/api/paiements/swagger-ui.html
 
 # 🛑 Arrêter le projet
 ```bash
