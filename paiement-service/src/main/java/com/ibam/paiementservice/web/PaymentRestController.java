@@ -6,6 +6,7 @@ import com.ibam.paiementservice.entities.model.User;
 import com.ibam.paiementservice.feign.ReservationRestClient;
 import com.ibam.paiementservice.feign.UserRestClient;
 import com.ibam.paiementservice.repository.PaymentRepository;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import java.util.Map;
 import java.util.Optional;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/paiements")
 public class PaymentRestController {
@@ -105,13 +105,13 @@ public class PaymentRestController {
             // Sauvegarde du paiement en base
             Payment savedPayment = paymentRepository.save(payment);
 
-            try {
-                // Appel au service de réservation
-                savedPayment.setReservation(reservationRestClient.getReservation(payment.getReservationId()));
-            } catch (Exception e) {
-                logger.error("Erreur lors de l'appel à reservation-service pour la création du paiement ID {} : {}", savedPayment.getId(), e.getMessage());
-                savedPayment.setReservation(null);
-            }
+//            try {
+//                // Appel au service de réservation
+//                savedPayment.setReservation(reservationRestClient.getReservation(payment.getReservationId()));
+//            } catch (Exception e) {
+//                logger.error("Erreur lors de l'appel à reservation-service pour la création du paiement ID {} : {}", savedPayment.getId(), e.getMessage());
+//                savedPayment.setReservation(null);
+//            }
 
             return ResponseEntity.status(HttpStatus.CREATED).body(savedPayment);
 
@@ -174,6 +174,7 @@ public class PaymentRestController {
         }
     }
 
+    @Hidden
     public Reservation getReservation(Long reservationId) {
         try {
             Reservation res = reservationRestClient.getReservation(reservationId);
@@ -184,6 +185,7 @@ public class PaymentRestController {
         }
     }
 
+    @Hidden
     public User getUser(Long userId) {
         try {
             User user = userRestClient.getUser(userId);
