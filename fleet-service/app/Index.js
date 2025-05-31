@@ -7,6 +7,7 @@ const LoginRequired = require("./middlewares/Auth");
 const loggerMiddleware = require("./middlewares/Logger");
 const globalErrorHandler = require("./middlewares/ErrorHandler");
 const Response = require("./middlewares/Response");
+const { registerWithEureka, sendHeartbeat } = require("./middlewares/Eureka");
 // const { InitUser } = require("./configs/InitData");
 // const { updateMetrics, Metrics } = require('./middlewares/Metrics');
 const swaggerSpec = require("./configs/Swagger");
@@ -59,6 +60,7 @@ app.listen(PORT, "0.0.0.0", async () => {
 
   setTimeout(async () => {
     await connect_db();
+    registerWithEureka();
   }, 3000);
 
   setTimeout(async () => {
@@ -66,6 +68,11 @@ app.listen(PORT, "0.0.0.0", async () => {
   }, 5000);
 });
 
+
+// Envoi de heartbeat à Eureka toutes les 30 secondes
+setInterval(() => {
+  sendHeartbeat();
+}, 10000);
 
 
 // app.listen(3010, () => {

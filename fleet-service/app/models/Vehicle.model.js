@@ -24,11 +24,11 @@ const Vehicle = DB.define(
         status: {
             type: DataTypes.ENUM("available", "in maintenance", "on trip"),
             allowNull: false,
-            defaultValue: "available", 
+            defaultValue: "available",
         },
         current_location: {
             type: DataTypes.JSON,
-            allowNull: true, 
+            allowNull: true,
             defaultValue: null,
             validate: {
                 isJSON: true
@@ -36,14 +36,14 @@ const Vehicle = DB.define(
         },
         last_maintenance_date: {
             type: DataTypes.DATE,
-            allowNull: true, 
+            allowNull: true,
         },
         capacity: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 0, 
+            defaultValue: 0,
         }
-        
+
     },
     {
         createdAt: "created_at",
@@ -79,8 +79,8 @@ const UpdateVehicleModel = Joi.object({
 });
 
 
-module.exports = { 
-    Vehicle, 
-    CreateVehicleModel, 
+module.exports = {
+    Vehicle,
+    CreateVehicleModel,
     UpdateVehicleModel,
 };
