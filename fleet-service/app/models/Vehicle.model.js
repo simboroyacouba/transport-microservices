@@ -17,6 +17,11 @@ const Vehicle = DB.define(
             allowNull: false,
             unique: true,
         },
+        marque: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null,
+        },
         type: {
             type: DataTypes.ENUM("bus", "mini-bus", "van", "truck", "car"),
             allowNull: false,
@@ -57,6 +62,7 @@ const Vehicle = DB.define(
 const CreateVehicleModel = Joi.object({
     code: Joi.string().required().max(20),
     type: Joi.string().required().valid("bus", "mini-bus", "van", "truck", "car"),
+    marque: Joi.string().optional().max(50),
     status: Joi.string().required().valid("available", "in maintenance", "on trip"),
     current_location: Joi.object().optional().pattern(
         Joi.string(),
@@ -69,6 +75,7 @@ const CreateVehicleModel = Joi.object({
 const UpdateVehicleModel = Joi.object({
     code: Joi.string().optional().max(20),
     type: Joi.string().optional().valid("bus", "mini-bus", "van", "truck", "car"),
+    marque: Joi.string().optional().max(50),
     status: Joi.string().optional().valid("available", "in maintenance", "on trip"),
     current_location: Joi.object().optional().pattern(
         Joi.string(),
