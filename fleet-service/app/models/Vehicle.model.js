@@ -31,7 +31,7 @@ const Vehicle = DB.define(
             allowNull: false,
             defaultValue: "available",
         },
-        current_location: {
+        currentLocation: {
             type: DataTypes.JSON,
             allowNull: true,
             defaultValue: null,
@@ -39,7 +39,7 @@ const Vehicle = DB.define(
                 isJSON: true
             }
         },
-        last_maintenance_date: {
+        lastMaintenanceDate: {
             type: DataTypes.DATE,
             allowNull: true,
         },
@@ -64,11 +64,11 @@ const CreateVehicleModel = Joi.object({
     type: Joi.string().required().valid("bus", "mini-bus", "van", "truck", "car"),
     marque: Joi.string().optional().max(50),
     status: Joi.string().required().valid("available", "in maintenance", "on trip"),
-    current_location: Joi.object().optional().pattern(
+    currentLocation: Joi.object().optional().pattern(
         Joi.string(),
         Joi.number()
     ).max(1000), // Example: { "latitude": 12.34, "longitude": 56.78 }
-    last_maintenance_date: Joi.date().optional(),
+    lastMaintenanceDate: Joi.date().optional(),
     capacity: Joi.number().required().min(1).max(1000)
 });
 
@@ -77,11 +77,11 @@ const UpdateVehicleModel = Joi.object({
     type: Joi.string().optional().valid("bus", "mini-bus", "van", "truck", "car"),
     marque: Joi.string().optional().max(50),
     status: Joi.string().optional().valid("available", "in maintenance", "on trip"),
-    current_location: Joi.object().optional().pattern(
+    currentLocation: Joi.object().optional().pattern(
         Joi.string(),
         Joi.number()
     ).max(1000), // Example: { "latitude": 12.34, "longitude": 56.78 }
-    last_maintenance_date: Joi.date().optional(),
+    lastMaintenanceDate: Joi.date().optional(),
     capacity: Joi.number().optional().min(1).max(1000)
 });
 
