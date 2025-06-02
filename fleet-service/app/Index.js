@@ -19,7 +19,7 @@ const driverRouter = require("./routes/Driver.route");
 
 const PORT = process.env.PORT;
 
-require("dotenv").config();
+require("dotenv").config({ path: ".env" });
 
 const app = express();
 

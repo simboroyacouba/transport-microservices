@@ -104,18 +104,18 @@ services:
     build: ./fleet-service/app
     restart: always
     volumes:
-      - ./fleet-service/app/configs:/app/configs
-      - ./fleet-service/app/controllers:/app/controllers
-      - ./fleet-service/app/middlewares:/app/middlewares
-      - ./fleet-service/app/models:/app/models
-      - ./fleet-service/app/routes:/app/routes
-      - ./fleet-service/app/utils:/app/utils
-      - ./fleet-service/app/logs:/app/logs
-      - ./fleet-service/app/node_modules:/app/node_modules
-      - ./fleet-service/app/.env:/app/.env
-      - ./fleet-service/app/package.json:/app/package.json
-      - ./fleet-service/app/package-lock.json:/app/package-lock.json
-      - ./fleet-service/app/Index.js:/app/Index.js
+      - ./fleet-service/app:/app
+      - /app/node_modules
+      # - ./fleet-service/app/configs:/app/configs
+      # - ./fleet-service/app/controllers:/app/controllers
+      # - ./fleet-service/app/middlewares:/app/middlewares
+      # - ./fleet-service/app/models:/app/models
+      # - ./fleet-service/app/routes:/app/routes
+      # - ./fleet-service/app/utils:/app/utils
+      # - ./fleet-service/app/logs:/app/logs
+      # - ./fleet-service/app/.env:/app/.env
+      # - ./fleet-service/app/package.json:/app/package.json
+      # - ./fleet-service/app/Index.js:/app/Index.js
     expose:
       - 5000
     ports:
