@@ -14,6 +14,8 @@ const swaggerSpec = require("./configs/Swagger");
 
 // ============ Import Routes
 const vehicleRouter = require("./routes/Vehicle.route");
+const tripRouter = require("./routes/Trip.route");
+const driverRouter = require("./routes/Driver.route");
 
 const PORT = process.env.PORT;
 
@@ -36,7 +38,8 @@ app.get("/", (req, res, next) => {
 
 // My routers
 app.use("/vehicle", vehicleRouter);
-
+app.use("/trip", tripRouter);
+app.use("/driver", LoginRequired, driverRouter);
 
 
 
