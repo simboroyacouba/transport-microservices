@@ -51,8 +51,8 @@ const Vehicle = DB.define(
 
     },
     {
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        createdAt: "createdAt",
+        updatedAt: "updatedAt",
         tableName: "vehicles",
     }
 );
