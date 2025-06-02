@@ -30,7 +30,7 @@ const {
  *           description: Statut du véhicule
  *         currentLocation:
  *           type: object
- *           description: Localisation actuelle (ex: { "latitude": 12.34, "longitude": 56.78 })
+ *           description: "Localisation actuelle (ex: { \"latitude\": 12.34, \"longitude\": 56.78 })"
  *         lastMaintenanceDate:
  *           type: string
  *           format: date
