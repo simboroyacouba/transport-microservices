@@ -1,18 +1,68 @@
 version: "3.8"
 
 services:
-  db:
+  paiement_db:
+    container_name: paiement_db
     image: postgres:17.4
     restart: always
-    container_name: postgres
     ports:
       - 7400:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - pgdata2:/var/lib/postgresql/data
+      - paiement_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - public
+
+  fleet_db:
+    container_name: fleet_db
+    image: mysql:9.2.0
+    restart: always
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=fleet
+      - MYSQL_USER=user_fleet
+      - MYSQL_PASSWORD=123456
+    volumes:
+      - fleet_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - public
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:5.2.2
+    restart: always
+    ports:
+      - 8082:80
+    environment:
+      - PMA_HOST=fleet_db
+      - PMA_USER=user_fleet
+      - PMA_PASSWORD=123456
+      - PMA_PORT=3306
+      - PMA_ARBITRARY=1
+    networks:
+      - public
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=paiement_db
     networks:
       - public
 
@@ -33,19 +83,55 @@ services:
     restart: always
     container_name: paiement
     depends_on:
-      - db
+      - paiement_db
       - discovery
     expose:
       - "7070"
     environment:
       - PAIEMENT_SERVICE_NAME=paiement-service
       - PAIEMENT_SERVICE_PORT=7070
-      - PAIEMENT_SERVICE_DB_URL=db:5432/paiement
+      - PAIEMENT_SERVICE_DB_URL=paiement_db:5432/paiement
       - PAIEMENT_SERVICE_DB_USERNAME=user_paiement
       - PAIEMENT_SERVICE_DB_PASSWORD=123456
       - PAIEMENT_SERVICE_EUREKA_URL=http://discovery:8761/eureka
       - PAIEMENT_SERVICE_EUREKA_SWAGGER_PATH=/api/paiements/swagger-ui.html
       - PAIEMENT_SERVICE_EUREKA_API_DOCS_PATH=/api/paiements/v3/api-docs
+    networks:
+      - public
+
+  fleet:
+    container_name: fleet
+    build: ./fleet-service/app
+    restart: always
+    volumes:
+      - ./fleet-service/app:/app
+      - /app/node_modules
+      # - ./fleet-service/app/configs:/app/configs
+      # - ./fleet-service/app/controllers:/app/controllers
+      # - ./fleet-service/app/middlewares:/app/middlewares
+      # - ./fleet-service/app/models:/app/models
+      # - ./fleet-service/app/routes:/app/routes
+      # - ./fleet-service/app/utils:/app/utils
+      # - ./fleet-service/app/logs:/app/logs
+      # - ./fleet-service/app/.env:/app/.env
+      # - ./fleet-service/app/package.json:/app/package.json
+      # - ./fleet-service/app/Index.js:/app/Index.js
+    expose:
+      - 5000
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+    depends_on:
+      - discovery
+      - gateway
+      - fleet_db
+    env_file:
+      - ./fleet-service/app/.env
     networks:
       - public
 
@@ -62,12 +148,14 @@ services:
       - GATEWAY_SERVICE_NAME=gateway-service
       - GATEWAY_SERVICE_PORT=8888
       - GATEWAY_SERVICE_EUREKA_URL=http://discovery:8761/eureka
-  
+
     networks:
       - public
 
 volumes:
-  pgdata2:
+  fleet_data:
+    driver: local
+  paiement_data:
     driver: local
 
 networks:
