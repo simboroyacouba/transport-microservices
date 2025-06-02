@@ -42,7 +42,13 @@ const registerWithEureka = async () => {
 const sendHeartbeat = () => {
     axios.put(`http://${eurekaHost}:${eurekaPort}/eureka/apps/${appName}/${instanceId}`)
         .then(() => console.log('💓 Heartbeat envoyé à Eureka'))
-        .catch(err => console.error('❌ Erreur heartbeat :', err.message));
+        .catch(err => {
+            console.error('❌ Erreur lors de l\'envoi du heartbeat à Eureka :', err.message);
+            if (err.response && err.response.status === 404) {
+                console.error('⚠️ Service non trouvé dans Eureka, tentative de réenregistrement...');
+                registerWithEureka();
+            }
+        });
 };
 
 module.exports = {

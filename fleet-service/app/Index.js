@@ -38,14 +38,7 @@ app.get("/", (req, res, next) => {
 app.use("/vehicle", vehicleRouter);
 
 
-app.get("/error-test", (req, res, next) => {
-  const error = new Error("Test Error");
-  error.statusCode = 500;
-  // next(error);
-  throw error;
-});
 
-// app.get('/metrics', Metrics);
 
 app.all("/", (req, res, next) => {
   res.status(404).Response({ message: "Url non trouvée" });
@@ -62,23 +55,11 @@ app.listen(PORT, "0.0.0.0", async () => {
     await connect_db();
     registerWithEureka();
   }, 3000);
-
-  setTimeout(async () => {
-    // await InitUser();
-  }, 5000);
 });
 
 
 // Envoi de heartbeat à Eureka toutes les 30 secondes
 setInterval(() => {
   sendHeartbeat();
-}, 10000);
+}, 30000);
 
-
-// app.listen(3010, () => {
-//   console.log('Prometheus Metrics server listening on http://localhost:3010');
-// })
-
-// app.listen(3011, () => {
-//   console.log('Fibonacci API Server listening on http://localhost:3011');
-// })
