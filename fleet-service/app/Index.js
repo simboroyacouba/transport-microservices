@@ -1,5 +1,6 @@
 // ============ Modules
 const express = require("express");
+const swaggerUi = require('swagger-ui-express');
 const { connect_db } = require("./configs/Database");
 
 // ============ Import Middlewares
@@ -8,8 +9,6 @@ const loggerMiddleware = require("./middlewares/Logger");
 const globalErrorHandler = require("./middlewares/ErrorHandler");
 const Response = require("./middlewares/Response");
 const { registerWithEureka, sendHeartbeat } = require("./middlewares/Eureka");
-// const { InitUser } = require("./configs/InitData");
-// const { updateMetrics, Metrics } = require('./middlewares/Metrics');
 const swaggerSpec = require("./configs/Swagger");
 
 // ============ Import Routes
@@ -26,8 +25,10 @@ const app = express();
 
 // ============ Middleware Use 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(loggerMiddleware);
 app.use(Response);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec.swaggerSpec));
 
 app.get("/", (req, res, next) => {
   res.json({
@@ -39,7 +40,7 @@ app.get("/", (req, res, next) => {
 // My routers
 app.use("/vehicle", vehicleRouter);
 app.use("/trip", tripRouter);
-app.use("/driver", LoginRequired, driverRouter);
+app.use("/driver", driverRouter);
 
 
 

@@ -31,15 +31,15 @@ const Trip = DB.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        date_depart: {
+        dateDepart: {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        heure_depart: {
+        heureDepart: {
             type: DataTypes.TIME,
             allowNull: false,
         },
-        heure_arrivee: {
+        heureArrivee: {
             type: DataTypes.TIME,
             allowNull: true,
         },
@@ -50,8 +50,8 @@ const Trip = DB.define(
         },
     },
     {
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        createdAt: "createdAt",
+        updatedAt: "updatedAt",
         tableName: "trips",
     }
 );
@@ -59,18 +59,18 @@ const Trip = DB.define(
 const CreateTripModel = Joi.object({
     depart: Joi.string().required(),
     destination: Joi.string().required(),
-    date_depart: Joi.date().iso().required(),
-    heure_depart: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).required(),
-    heure_arrivee: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).optional().allow(null),
+    dateDepart: Joi.date().iso().required(),
+    heureDepart: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).required(),
+    heureArrivee: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).optional().allow(null),
     statut: Joi.string().valid("prévu", "en_cours", "terminé", "annulé").default("prévu"),
 });
 
 const UpdateTripModel = Joi.object({
     depart: Joi.string().optional(),
     destination: Joi.string().optional(),
-    date_depart: Joi.date().iso().optional(),
-    heure_depart: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).optional(),
-    heure_arrivee: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).optional().allow(null),
+    dateDepart: Joi.date().iso().optional(),
+    heureDepart: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).optional(),
+    heureArrivee: Joi.string().pattern(/^\d{2}:\d{2}:\d{2}$/).optional().allow(null),
     statut: Joi.string().valid("prévu", "en_cours", "terminé", "annulé").optional(),
 });
 

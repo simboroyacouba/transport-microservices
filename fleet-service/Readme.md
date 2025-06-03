@@ -3,6 +3,12 @@
 ## Description 📖
 Le Fleet Service est une API qui gère les véhicules, les trajets et les conducteurs. Elle est construite avec Node.js et Express et utilise Sequelize pour la gestion de la base de données.
 
+## URL 🔗
+
+- **API Base URL** : [http://localhost:5000](http://localhost:5000)
+- **Documentation Swagger** : [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
+
+
 ## Routes 🛣️
 
 ### Véhicules 🚙
