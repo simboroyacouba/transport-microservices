@@ -41,6 +41,10 @@ spring:
           predicates:
             - Path=/api/paiements/** #Path=/api/paiements/**
 
+        - id: fleet-service
+          uri: lb://FLEET-SERVICE
+          predicates:
+            - Path=/vehicle/**, /trip/**, /driver/**
 
 
 eureka:

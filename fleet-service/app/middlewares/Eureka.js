@@ -11,6 +11,7 @@ const instanceId = `${os.hostname()}:${appName}:${PORT}`;
 // Déclaration JSON
 const registration = {
     instance: {
+        vipAddress: appName,
         instanceId: instanceId,
         hostName: os.hostname(),
         app: appName,
