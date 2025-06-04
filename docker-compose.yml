@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   paiement_db:
@@ -67,6 +66,7 @@ services:
       - public
 
   discovery:
+    build: ./discovery-service
     image: discovery-service:latest
     restart: always
     container_name: discovery
@@ -79,6 +79,7 @@ services:
       - public
 
   paiement:
+    build: ./paiement-service 
     image: paiement-service:latest
     restart: always
     container_name: paiement
@@ -98,6 +99,33 @@ services:
       - PAIEMENT_SERVICE_EUREKA_API_DOCS_PATH=/api/paiements/v3/api-docs
     networks:
       - public
+ 
+  reservation:
+    build: ./reservation-service 
+    image: reservation-service:latest
+    restart: always
+    container_name: reservation
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+      - discovery
+    environment:
+      - RESERVATION_SERVICE_NAME=reservation-service
+      - RESERVATION_SERVICE_PORT=8082
+      - RESERVATION_SERVICE_DB_URL=db:5432/postgres
+      - RESERVATION_SERVICE_DB_USERNAME=postgres
+      - RESERVATION_SERVICE_DB_PASSWORD=postgres
+      - RESERVATION_SERVICE_EUREKA_URL=http://discovery:8761/eureka
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - public
+
 
   fleet:
     container_name: fleet
@@ -136,6 +164,7 @@ services:
       - public
 
   gateway:
+    build: ./gateway-service
     image: gateway-service:latest
     restart: always
     container_name: gateway
